@@ -1,0 +1,335 @@
+<script>
+  <% unless @product_all.nil? %>
+    var product_all = Array();
+    var s = 0
+    <% @product_all.each do |f| %>
+    var q = <%= f.id %>;
+    var w = '<%= f.name %>';
+    var e = '<%= f.category %>';
+    product_all[s] = Array();
+    product_all[s][0] = q;
+    product_all[s][1] = w;
+    product_all[s][2] = e;
+    s += 1
+    <% end %>
+    function hasi_modifiers() {
+      if ($('#products_has_modifiers').prop('checked') == true) {
+        $('#products_modifier').hide();
+        $('#modifier_id').hide();
+      } else {
+        $('#products_modifier').show();
+        $('#modifier_id').show();
+      }
+    }
+    function modifier() {
+      if ($('#products_modifier').prop('checked') == true) {
+        $('#products_has_modifiers').hide();
+        check_modifier_id();
+      } else {
+        $('#products_has_modifiers').show();
+      }
+    }
+    function check_modifier_id() {
+      $("#modifier_id").empty();
+      for(var ii=0; ii< s;ii++){
+        if (product_all[ii][2] == $('#products_category').val()) {
+          zzz = '<option value='+product_all[ii][0]+'>'+product_all[ii][1]+'</option>';
+          $("#modifier_id").append( $(zzz));
+        }
+
+      }
+    }
+  <% end %>
+</script>
+<div class="popup__overlay">
+  <div class="popup_alkp">
+    <a href="#" class="popup__close">X</a>
+    <div class="popup-body">
+
+    </div>
+  </div>
+</div>
+<!--<div class="modal-body">-->
+<div class="">
+  <%= form_for @product do |f| %>
+
+    <table class="table table-striped">
+      <tr>
+        <td>
+          <%= f.label :Наименование %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Описание %><br>
+        </td>
+        <td>
+          <%= f.text_area :description %>
+        </td>
+      </tr>
+      <!--<tr>-->
+        <!--<td>-->
+          <!--< %= f.label :'Описание в окне ?' %><br>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--< %= f.check_box :modal_help %>-->
+        <!--</td>-->
+      <!--</tr>-->
+      <tr>
+        <td>
+          <%= f.label :'Короткое описание' %><br>
+        </td>
+        <td>
+          <%= f.text_field :short_description %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Категория' %><br>
+        </td>
+        <td>
+          <%= f.select(:category, @category) %>
+        </td>
+      </tr>
+      <% unless @product.set == true %>
+        <tr>
+          <td>
+            <%= f.label :'Сколько отображать для выбора' %><br>
+          </td>
+          <td>
+            <%= f.select(:how_many, @how_many) %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>
+          <%= f.label 'Характеристика 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name1 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price1 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Kepper 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper1 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Характеристика 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Kepper 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Характеристика 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name3 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price3 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Kepper 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper3 %>
+        </td>
+      </tr>
+      <% if @product.set == true %>
+        <tr>
+          <td>
+            <!--< %= f.label :'Имеет модификаторы ?' %><br>-->
+            <%= f.label :'Графическое представление ?' %><br>
+          </td>
+          <td>
+            <!--< %= f.check_box :has_modifiers, onclick: 'hasi_modifiers();' %>-->
+            <%= f.check_box :has_modifiers %>
+          </td>
+        </tr>
+        <!--<tr>-->
+          <!--<td>-->
+            <!--< %= f.label :'Модификатор ?' %><br>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--< %= f.check_box :modifier, onclick: "modifier();" %>-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--< %= f.label :'Привязать к продукту' %><br>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<select id="modifier_id" name="products[modifier_id]">-->
+
+            <!--</select>-->
+          <!--</td>-->
+        <!--</tr>-->
+      <% end %>
+      <tr>
+        <td>
+          <%= f.label :Файл %><br>
+        </td>
+        <td>
+          <%= f.file_field :view_products %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :"Вес продукта" %><br>
+        </td>
+        <td>
+          <%= f.text_field :weight %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Набор продуктов ?' %><br>
+        </td>
+        <td>
+          <%= f.check_box :set %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+          <table class="table table-striped">
+            <% varia = Variant.where('products_id = ?', @product.id).order('id ASC') %>
+            <!--< % unless varia.nil? %>-->
+            <% count = 0 %>
+              <% varia.each do |var| %>
+                <% count += 1 %>
+                <tr><td></td>
+                  <td>
+                    <%= var.pizza %>
+                  </td>
+                  <td>
+                    Блюдо №<%= count %>
+                  </td>
+                  <td>
+                    <a class="popup__toggle" data-remote="true" href="/variants/add_product/<%= @product.id %>?idd=<%= var.id %>" onclick="">Добавить Продукт</a>
+                    |
+                    <a data-confirm="Are you sure?" data-method="delete" href="/variants/delete_dish/<%= var.id %>?idd=<%= @product.id %>" rel="nofollow">Удалить Блюдо</a>
+                  </td>
+                  <% Content.where('variants_id = ?', var.id).each do |cont| %>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <% if cont.idd == 99301991 %>
+                          Пицца
+                          <% case cont.size %>
+                            <% when 1 %>
+                              Стандартная
+                            <% when 2 %>
+                              Большая
+                            <% when 3 %>
+                              Мега
+                            <% end %>
+                        <% else %>
+                          <% pro_ = Products.find(cont.idd) %>
+                          <%= pro_.name %> :
+                          <% case cont.size %>
+                            <% when 1 %>
+                                <%= pro_.name1 %>
+                            <% when 2 %>
+                              <%= pro_.name2 %>
+                            <% when 3 %>
+                              <%= pro_.name3 %>
+                            <% end %>
+                        <% end %>
+                      </td>
+                      <td>
+                        <a data-confirm="Are you sure?" data-method="delete" href="/variants/delete_product/<%= cont.id %>?idd=<%= @product.id %>" rel="nofollow">Удалить Продукт</a>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tr>
+              <% end %>
+            <a href="/variants/add_dish/<%= @product.id %>"
+               onclick="" >Добавить Блюдо</a>
+            <!--< % end %>-->
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= link_to 'Удалить', product_path(@product), method: :delete, data: { confirm: 'Are you sure?' } %>
+
+          <%= f.submit 'Сохранить'%>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<br>
+<div class="modal-footer">
+  <%= link_to 'Назад', products_path %>
+</div>
+
+<script>
+  p = $('.popup__overlay')
+  $('.popup__toggle').click(function() {
+    p.css('display', 'block')
+  })
+  p2 = $('.popup__overlay2')
+  $('.popup__toggle2').click(function() {
+    p2.css('display', 'block')
+  })
+  p.click(function(event) {
+    e = event || window.event
+    if (e.target == this) {
+        $(p).css('display', 'none')
+    }
+  })
+  $('.popup__close').click(function() {
+    p.css('display', 'none')
+  })
+
+  document.getElementById('products_rkeeper1').onkeypress=checkSymbol;
+  document.getElementById('products_rkeeper2').onkeypress=checkSymbol;
+  document.getElementById('products_rkeeper3').onkeypress=checkSymbol;
+
+
+</script>

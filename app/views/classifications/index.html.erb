@@ -1,0 +1,18 @@
+<%= link_to "Новая Классификация", new_classification_path, class: "cat cat-active" %>
+<table>
+<% @classifications.each do |f| %>
+  <tr>
+    <td>
+      <%= f.weight %>
+    </td>
+    <td>
+      <%= link_to f.name, classification_path(f.id) , class: "variant3" %>
+    </td>
+    <td>
+      <a data-confirm="Вы действительно хотите удалить '<%= f.name %>' классификацию?" data-method="delete" href="/classifications/<%= f.id %>" rel="nofollow">
+        <img src="/assets/control/Delete32.gif" height="15">
+      </a>
+    </td>
+  </tr>
+<% end %>
+</table>

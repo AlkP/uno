@@ -1,0 +1,68 @@
+<!--<div class="modal-body">-->
+  <%= form_for @pizza do |f| %>
+
+    <table class="table table-striped">
+      <td hidden>
+        <%= f.label :'Пицца для набора ?' %><br>
+      </td>
+      <td>
+        <%= f.check_box :sets %>
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Наименование %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Классификация' %><br>
+        </td>
+        <td>
+          <%= f.select(:classification_id, @classification.map {|f| [f.name, f.id]}, selected: @pizza.classification_id ) %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Описание %><br>
+        </td>
+        <td>
+          <%= f.text_area :description %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Описание в окне ?' %><br>
+        </td>
+        <td>
+          <%= f.check_box :modal_help, disabled: '' %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Файл %><br>
+        </td>
+        <td>
+          <%= f.file_field :view_products %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.submit 'Сохранить', class: "cat cat-active pan-pizza"%>
+         </td>
+      </tr>
+
+
+    </table>
+  <% end %>
+<!--</div>-->
+<br>
+<div class="modal-footer">
+  <button><%= link_to 'Удалить', pizza_path(@pizza),
+                      method: :delete,
+                      data: { confirm: 'Вы действительно хотите удалить пиццу?' } %></button> |
+  <button><%= link_to 'Назад', '/pizza' %></button>
+</div>

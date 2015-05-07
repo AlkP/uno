@@ -1,0 +1,96 @@
+<ul class="drop" style="position:absolute; left:235px; top: 360px;">
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/delivery_pushkin">г.Пушкин</a>
+  </li>
+  <li class="m-active" style="width: 145px;">
+    <a href="/delivery_peter">г.Санкт-Петербург</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/delivery_kolpino">г.Колпино</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/delivery_terlyaevo">г.Павловск</a>
+  </li>
+</ul>
+<div style="font-family: Verdana; width: 431px; position: relative;" class="delivery">
+  <div>
+    <b><big>Район доставки: </big></b>
+    <br><br>
+    <div>
+      <a href="/assets/main-page/dostavka_piter.jpg" class="lightbox"><img class="previev" src="/assets/main-page/dostavka_piter_trumb.jpg"></a>
+    </div>
+    <br><br>
+    <b><big>Зона доставки: </big></b>
+    <br><br>
+    <div>
+      Невский район (правый берег р.Нева), Красногвардейский район (южнее ш. Революции)
+    </div>
+  </div>
+  <br>
+  <br>
+  <div>
+    <br><b><big>г. Санкт-Петербург,
+    <br>Тел.: 702 7555</big></b>
+    <br>
+    <br>с воскресения по четверг с 11-00 до 23-00
+    <br>пятница, суббота и предпраздничные дни с 11-00 до 01.00
+    <br>Доставка и упаковка бесплатно
+    <br>Доставка в течение часа
+    <br><i>(может быть задержана по независящим от нас причинам)</i>
+
+  </div>
+</div>
+
+<script>
+  function positionLightboxImage() {
+    var top = ($(window).height() - $('#lightbox').height()) / 2;
+    var left = ($(window).width() - $('#lightbox').width()) / 2;
+    $('#lightbox')
+      .css({
+        'top': top,
+        'left': left
+      })
+      .fadeIn();
+  }
+
+  function removeLightbox() {
+    $('#overlay, #lightbox')
+      .fadeOut('slow', function() {
+        $(this).remove();
+        $('body').css('overflow-y', 'auto'); // show scrollbars!
+      });
+  }
+
+
+  $(document).ready(function(){
+    $('a.lightbox').click(function(e) {
+      $('body').css('overflow-y', 'hidden'); // hide scrollbars!
+
+      $('<div id="overlay"></div>')
+        .css('top', '0')
+        .css('opacity', '0')
+        .animate({'opacity': '0.8'}, 'slow')
+        .appendTo('body');
+
+      $('<div id="lightbox"></div>')
+        .hide()
+        .appendTo('body');
+
+      $('<img id="light-img">')
+        .attr('src', $(this).attr('href'))
+        .load(function() {
+          positionLightboxImage();
+        })
+        .click(function() {
+          removeLightbox();
+        })
+        .appendTo('#lightbox');
+
+      $('#overlay').click(function() {
+        removeLightbox();
+      });
+      return false;
+    });
+  });
+</script>
+

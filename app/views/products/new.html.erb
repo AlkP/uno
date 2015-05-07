@@ -1,0 +1,249 @@
+<script>
+  <% unless @product_all.nil? %>
+    var product_all = Array();
+    var s = 0
+    <% @product_all.each do |f| %>
+      var q = <%= f.id %>;
+      var w = '<%= f.name %>';
+      var e = '<%= f.category %>';
+      product_all[s] = Array();
+      product_all[s][0] = q;
+      product_all[s][1] = w;
+      product_all[s][2] = e;
+      s += 1
+    <% end %>
+    function has_modifiers() {
+      if ($('#products_has_modifiers').prop('checked') == true) {
+        $('#products_modifier').hide();
+        $('#modifier_id').hide();
+      } else {
+        $('#products_modifier').show();
+        $('#modifier_id').show();
+      }
+    }
+    function modifier() {
+      if ($('#products_modifier').prop('checked') == true) {
+        $('#products_has_modifiers').hide();
+        check_modifier_id();
+      } else {
+        $('#products_has_modifiers').show();
+      }
+    }
+    function check_modifier_id() {
+      $("#modifier_id").empty();
+      for(var ii=0; ii< s;ii++){
+        if (product_all[ii][2] == $('#products_category').val()) {
+          zzz = '<option value='+product_all[ii][0]+'>'+product_all[ii][1]+'</option>';
+          $("#modifier_id").append( $(zzz));
+        }
+
+      }
+    }
+  <% end %>
+</script>
+<!--<div class="modal-body">-->
+<div class="">
+  <%= form_for @product, :url => products_path(@product) do |f| %>
+
+    <table class="table table-striped">
+      <tr>
+        <td>
+          <%= f.label :Наименование %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Описание %><br>
+        </td>
+        <td>
+          <%= f.text_area :description %>
+        </td>
+      </tr>
+      <!--<tr>-->
+        <!--<td>-->
+          <!--< %= f.label :'Описание в окне ?' %><br>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--< %= f.check_box :modal_help %>-->
+        <!--</td>-->
+      <!--</tr>-->
+      <tr>
+        <td>
+          <%= f.label :'Короткое описание' %><br>
+        </td>
+        <td>
+          <%= f.text_field :short_description %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Категория' %><br>
+        </td>
+        <td>
+          <select id="products_category" name="products[category]">
+            <option value=""></option>
+            <option value="lunches">Ланчи</option>
+            <option value="sets">Наборы</option>
+            <option value="hot_snacks">Горячие закуски</option>
+            <option value="pasta">Паста</option>
+            <option value="salads">Салаты</option>
+            <option value="soups">Супы</option>
+            <option value="dessert">Десерты</option>
+            <option value="drinks">Напитки</option>
+            <option value="beer">Пиво</option>
+            <option value="others">Другое</option>
+            <option value="japan_sushi">Япония - Суши</option>
+            <option value="japan_rolls">Япония - Роллы</option>
+            <option value="japan_hot_rolls">Япония - Горячие роллы</option>
+            <option value="japan_special_roll">Япония - Фирменные роллы</option>
+            <option value="japan_sets">Япония - Наборы</option>
+            <option value="japan_others">Япония - Прочее</option>
+          </select>
+        </td>
+      </tr>
+      <% unless @product.set == true %>
+        <tr>
+          <td>
+            <%= f.label :'Сколько отображать для выбора' %><br>
+          </td>
+          <td>
+            <%= f.select(:how_many, @how_many) %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label 'Характеристика 1' %><br>
+          </td>
+          <td>
+            <%= f.text_field :name1 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'Цена 1' %><br>
+          </td>
+          <td>
+            <%= f.text_field :price1 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'R-Kepper 1' %><br>
+          </td>
+          <td>
+            <%= f.text_field :rkeeper1 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'Характеристика 2' %><br>
+          </td>
+          <td>
+            <%= f.text_field :name2 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'Цена 2' %><br>
+          </td>
+          <td>
+            <%= f.text_field :price2 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'R-Kepper 2' %><br>
+          </td>
+          <td>
+            <%= f.text_field :rkeeper2 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'Характеристика 3' %><br>
+          </td>
+          <td>
+            <%= f.text_field :name3 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'Цена 3' %><br>
+          </td>
+          <td>
+            <%= f.text_field :price3 %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :'R-Kepper 3' %><br>
+          </td>
+          <td>
+            <%= f.text_field :rkeeper3 %>
+          </td>
+        </tr>
+        <!--<tr>-->
+          <!--<td>-->
+            <!--< %= f.label :'Имеет модификаторы ?' %><br>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--< %= f.check_box :has_modifiers, onclick: 'hasi_modifiers();' %>-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--< %= f.label :'Модификатор ?' %><br>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--< %= f.check_box :modifier, onclick: "modifier();" %>-->
+          <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>-->
+            <!--< %= f.label :'Привязать к продукту' %><br>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<select id="modifier_id" name="products[modifier_id]">-->
+
+            <!--</select>-->
+          <!--</td>-->
+        <!--</tr>-->
+      <% end %>
+      <tr>
+        <td>
+          <%= f.label :'Набор продуктов ?' %><br>
+        </td>
+        <td>
+          <%= f.check_box :set %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Файл %><br>
+        </td>
+        <td>
+          <%= f.file_field :view_products %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :"Вес продукта" %><br>
+        </td>
+        <td>
+          <%= f.text_field :weight %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.submit 'Save document'%>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<div class="modal-footer">
+  <%= link_to 'Назад', products_path %>
+</div>

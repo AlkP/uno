@@ -1,0 +1,17 @@
+$("#panel-details").html("<%= escape_javascript render 'products/show' %>");
+$("#menu").html("<%= escape_javascript render 'layouts/menu' %>");
+panel_details('<%= $menu %>');
+$(document).ready(function() {
+  $(".psize").click(function() {
+    $(this).parent().children(".psize").each(function() {
+      return $(this).removeClass("active");
+    });
+    return $(this).toggleClass("active");
+  });
+  return $(".duff-one").click(function() {
+    $(this).parent().children(".duff-one").each(function() {
+      return $(this).removeClass("duff-one-active");
+    });
+    return $(this).toggleClass("duff-one-active");
+  });
+});

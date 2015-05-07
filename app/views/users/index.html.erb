@@ -1,0 +1,37 @@
+<%= link_to "Новый пользователь", new_user_path, class: "cat cat-active" %>
+<div class="Table-Pizza" >
+<table>
+  <tr>
+    <th>
+      Пользователь
+    </th>
+    <th>
+      Админ?
+    </th>
+    <th>
+      Менеджер?
+    </th>
+    <th>
+      Действие
+    </th>
+  </tr>
+  <% @users.each do |f| %>
+    <tr>
+      <td>
+        <%= link_to f.name, user_path(f.id) , class: "variant3" %>
+      </td>
+      <td>
+        <%= f.admin %>
+      </td>
+      <td>
+        <%= f.manager %>
+      </td>
+      <td>
+        <a data-confirm="Вы действительно хотите удалить '<%= f.name %>' соус?" data-method="delete" href="/users/<%= f.id %>" rel="nofollow">
+          <img src="/assets/control/Delete32.gif" height="15">
+        </a>
+      </td>
+    </tr>
+  <% end %>
+</table>
+</div>

@@ -1,0 +1,168 @@
+<!--<div class="modal-body">-->
+<div class="">
+  <%= form_for @product, :url => products_path(@product) do |f| %>
+
+    <table class="table table-striped">
+      <tr>
+        <td>
+          <%= f.label :Наименование %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Описание %><br>
+        </td>
+        <td>
+          <%= f.text_area :description %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Короткое описание' %><br>
+        </td>
+        <td>
+          <%= f.text_field :short_description %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Категория' %><br>
+        </td>
+        <td>
+          <select id="products_category" name="products[category]">
+            <option value=""></option>
+            <option value="lunches">Ланчи</option>
+            <option value="sets">Наборы</option>
+            <option value="hot_snacks">Горячие закуски</option>
+            <option value="pasta">Паста</option>
+            <option value="salads">Салаты</option>
+            <option value="soups">Супы</option>
+            <option value="dessert">Десерты</option>
+            <option value="drinks">Напитки</option>
+            <option value="beer">Пиво</option>
+            <option value="others">Другое</option>
+            <option value="japan_sushi">Япония - Суши</option>
+            <option value="japan_rolls">Япония - Роллы</option>
+            <option value="japan_hot_rolls">Япония - Горячие роллы</option>
+            <option value="japan_special_roll">Япония - Фирменные роллы</option>
+            <option value="japan_sets">Япония - Наборы</option>
+            <option value="japan_others">Япония - Прочее</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Сколько отображать для выбора' %><br>
+        </td>
+        <td>
+          <%= f.select(:how_many, @how_many) %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Характеристика 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name1 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price1 %>
+        </td>
+
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Keeper код 1' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper1 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Характеристика 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Keeper код 2' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper2 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Характеристика 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :name3 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Цена 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :price3 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'R-Keeper код 3' %><br>
+        </td>
+        <td>
+          <%= f.text_field :rkeeper3 %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Файл %><br>
+        </td>
+        <td>
+          <%= f.file_field :view_products %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :"Вес продукта" %><br>
+        </td>
+        <td>
+          <%= f.text_field :weight %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.submit 'Save document'%>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<div class="modal-footer">
+  <%= link_to 'Назад', products_path %>
+</div>
+<script>
+  document.getElementById('products_rkeeper1').onkeypress=checkSymbol;
+  document.getElementById('products_rkeeper2').onkeypress=checkSymbol;
+  document.getElementById('products_rkeeper3').onkeypress=checkSymbol;
+</script>

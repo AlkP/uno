@@ -1,0 +1,15 @@
+<%= link_to "Новый соус", new_sauce_path, class: "cat cat-active" %>
+<table>
+  <% @sauces.each do |f| %>
+    <tr>
+      <td>
+        <%= link_to f.name, sauce_path(f.id) , class: "variant3" %>
+      </td>
+      <td>
+        <a data-confirm="Вы действительно хотите удалить '<%= f.name %>' соус?" data-method="delete" href="/sauces/<%= f.id %>" rel="nofollow">
+          <img src="/assets/control/Delete32.gif" height="15">
+        </a>
+      </td>
+    </tr>
+  <% end %>
+</table>

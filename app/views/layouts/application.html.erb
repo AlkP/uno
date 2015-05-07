@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<%= render 'layouts/headers' %>
+<body>
+
+
+<body>
+  <div id="container">
+    <div class="basket-basis"><%= render 'layouts/basket' %></div>
+    <div class="executed"></div>
+    <%= render 'layouts/header' %>
+    <% if current_user %>
+
+    <% end %>
+    <section id="oftop" class="main">
+      <nav id="navigation" class="main-navigation">
+        <ul id="menu">
+          <% if controller_name == 'main' || (!current_user.nil? && current_user.admin?) %>
+            <%= render 'layouts/menu' %>
+          <% end %>
+        </ul>
+      </nav>
+
+
+    <div id="panel-details" class="tab-pane">
+    </div>
+
+    <%= yield %>
+
+    </section>
+  <footer>
+    &nbsp;<br />&nbsp;<br />
+      <% if current_user %>
+        <%= current_user.name %>
+        <%= link_to "Logout", "/logout" %>
+      <% else %>
+        <span style="font-family:Arial, Helvetica, sans-serif; font-size:11px">&copy; pizza-uno.ru 2002-2013 гг. Все права защищены.<br>
+          <a href="http://gutsait.ru" target="blank">Проект холдинга Гутцайт Груп</a>
+        </span>
+      <% end %>
+  </footer>
+  </div>
+</body>
+
+</body>
+
+</html>
+

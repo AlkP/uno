@@ -1,0 +1,162 @@
+
+<%= javascript_include_tag "fotorama.js" %>
+<%= stylesheet_link_tag "fotorama.css" %>
+
+<% @products.each do |f| %>
+  <% unless f.has_modifiers %>
+    <div class="box box<%= f.id %>">
+      <div class="pname"><br><%= f.name %></div>
+      <a href="/products/preview/<%= f.id %>" data-remote="true" data-toggle="tab" onclick="$('#show_modal')[0].click()">
+        <div class="pimg" style="background-image: url('<%= f.view_products.url %>')">
+          <img src="/assets/plus.png" class="ptip-zoom">
+          <% if f.description != "" %>
+            <div class="ptip"><%= f.description %></div>
+          <% end %>
+        </div>
+      </a>
+      <% if f.how_many == 3 %>
+        <a class="psize active"
+           onclick="$('.price<%= f.id %>').text('<%= f.price1 %> р.');$('input#btn_keeper_<%= f.id.to_s %>').parent().parent().attr('action','/line_items?price=<%= f.price1 %>&name=<%= f.name %>&url=<%= f.view_products.url %>&size=1&pizza=false&id=<%= f.id %>');">
+          <%= f.name1 %>
+        </a>
+        <a class="psize"
+           onclick="$('.price<%= f.id %>').text('<%= f.price2 %> р.');$('input#btn_keeper_<%= f.id.to_s %>').parent().parent().attr('action','/line_items?price=<%= f.price2 %>&name=<%= f.name %>&url=<%= f.view_products.url %>&size=2&pizza=false&id=<%= f.id %>');">
+          <%= f.name2 %>
+        </a>
+        <a class="psize"
+           onclick="$('.price<%= f.id %>').text('<%= f.price3 %> р.');$('input#btn_keeper_<%= f.id.to_s %>').parent().parent().attr('action','/line_items?price=<%= f.price3 %>&name=<%= f.name %>&url=<%= f.view_products.url %>&size=3&pizza=false&id=<%= f.id %>');">
+          <%= f.name3 %>
+        </a>
+      <% end %>
+
+      <%= button_to 'ЗАКАЗАТЬ',
+                    line_items_path( :set => f.set,:price => f.price1,:name => f.name, :url => f.view_products.url,:size => 1, :pizza => false, :id => f.id ),
+                    :class => "variant2",
+                    :id => "btn_keeper_" + f.id.to_s,
+                    :remote => "true",
+                    :toggle => "tab",
+                    :style => "width: 133px;" %>
+
+      <script>
+        $('#btn_keeper_<%= f.id %>').parent().append('<div class="wandp" ><div class="weight"><%= f.short_description %></div><div class="price price<%= f.id %>"><%= f.price1 %> р.</div></div>')
+      </script>
+      <div class="clear"></div>
+    </div>
+  <% else %>
+
+    <%
+       idd = Array.new
+       variant = Variant.where('products_id = ? ', f.id)
+       variant.each do |vv|
+         content = Content.where('variants_id = ?', vv.id)
+         content.each do |cc|
+           idd << cc.idd
+         end
+       end
+       products_modifier = Products.where('id in (?)', idd)
+
+    %>
+
+
+
+    <div class="box box<%= f.id %>" style="top: 18px;">
+      <div class="pname" style="text-align: center;"><%= f.name %></div>
+      <div class="drinks_slide" data-loop="true">
+        <% products_modifier.each do |z| %>
+          <div class="box drinks">
+            <div data-action="/line_items?id=<%= z.id %>&name=<%= z.name %>&pizza=false&price=<%= f.price1 %>&size=1&url=<%= z.view_products.url %>" class="pname pname<%= z.id %>" align="center">(<%= z.name %>)</div>
+          </div>
+        <% end %>
+      </div>
+      <div class="pimg" style="background-image: url('<%= f.view_products.url %>')"></div>
+      <%= button_to 'ЗАКАЗАТЬ',
+                    line_items_path,
+                    :class => "variant2",
+                    :id => "btn_keeper_" + f.id.to_s,
+                    :remote => "true",
+                    :toggle => "tab",
+                    :style => "width: 133px;" %>
+
+      <script>
+        $($('#btn_keeper_<%= f.id.to_s %>').parent().parent())[0].className += " slider-button"
+        $('#btn_keeper_<%= f.id %>').parent().append('<div class="wandp" ><div class="weight"><%= f.short_description %></div><div class="price price<%= f.id %>"><%= f.price1 %> р.</div></div>')
+        $(function() {
+          $('.box<%= f.id %> .slider-button input').click(function() {
+            $(".slider-button").attr({action: $('.box<%= f.id %> .fotorama__frame_active .pname').attr('data-action')});
+          });
+        });
+      </script>
+      <div class="clear"></div>
+    </div>
+  <% end %>
+<% end %>
+
+
+<% if $menu == "drinks" %>
+  <br><br><br><br>
+  <a class="variant2 beer" href="#" id="beer2" data-remote="true" data-toggle="tab">Пиво</a>
+<% end %>
+
+<a id="show_modal" href="#show_preview"></a>
+<a href="#close" class="overlay" id="show_preview"></a>
+<div class="popup">
+</div>
+
+<script>
+  $(function() {
+    var drinkId = $('.fotorama__frame_active .pname').id;
+    $('input .drinks-order').attr({id: 'btn-keeper'+ drinkId});
+  });
+  var beer2 = $('#beer2')
+  beer2.click(function() {
+    $('<div id="overlay"></div>')
+      .css('top', '0')
+      .css('opacity', '0')
+      .animate({'opacity': '0.8'}, 'slow')
+      .appendTo('body');
+
+    $('<div id="lightbox"></div>')
+      .appendTo('body');
+
+    $(' <div id="apply"><h4>Есть ли вам 18 лет?</h4><a class="variant2" href="/products/beer" data-remote="true" id="adultEn">Да</a><a class="variant2" href="#" id="notAdult">Нет</a></div>')
+      .load(function() {
+        var top = ($(window).height() - $('#lightbox').height()) / 2;
+        var left = ($(window).width() - $('#lightbox').width()) / 2;
+        $('#lightbox')
+          .css({
+            'top': top,
+            'left': left
+          })
+          .fadeIn();
+      })
+      .appendTo('#lightbox');
+    $('#overlay').click(function() {
+      removeLightbox();
+    });
+    $('#apply a').click(function() {
+      removeLightbox();
+    });
+    return false;
+  });
+
+  $(function() {
+    $('.drinks_slide').fotorama();
+    $('.fotorama__thumbs_previews').hide();
+  });
+
+  var p = $('.popup__overlay')
+  $('.popup__toggle').click(function() {
+    p.css('display', 'none')
+  })
+  p.click(function(event) {
+    e = event || window.event
+    if (e.target == this) {
+      $(p).css('display', 'none')
+    }
+  })
+  $('.popup__close').click(function() {
+    p.css('display', 'none')
+  })
+</script>
+
+<%= render 'layouts/message' %>

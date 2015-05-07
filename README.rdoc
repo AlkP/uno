@@ -1,0 +1,6 @@
+== README
+
+rake db:migrate
+rake:db:setup
+
+

@@ -1,0 +1,130 @@
+<ul class="drop">
+  <%
+  unless current_user.nil?
+    if current_user.admin?%>
+      <li>
+        <a class="m-diactive" href="/users">Пользов.</a>
+      </li>
+      <li>
+        <a class="m-diactive" href="/pizza">Пицца</a>
+      </li>
+      <li style="width: 120px;">
+        <a class="m-diactive" href="/pizza?sets=true">Пицца наборов</a>
+      </li>
+      <li>
+        <a class="m-diactive" href="/classifications">Типы</a>
+      </li>
+      <li>
+        <a class="m-diactive" href="/sauces">Соусы</a>
+      </li>
+      <li>
+        <a class="m-diactive" href="/products">Продукты</a>
+      </li>
+      <li>
+        <a class="m-diactive" href="/pizzerias">Пиццерии</a>
+      </li> <br><br>
+  <%
+     else %>
+      <i><h4>Панель менеджера</h4></i>
+  <%
+    end
+  end
+  if current_user.nil? or !current_user.manager? %>
+    <% if controller_name != "sendforms" %>
+
+      <li class="<% if $menu=='pizza' %>m-active<% else %>m-diactive<% end %>" onclick="">
+        <a href="/pizza" data-remote="true" data-toggle="tab" id="">Пицца</a>
+      </li>
+      <li class="<% if $menu=='lunches' %>m-active<% else %> m-diactive<% end %>" >
+        <a href="/products/lunches" data-remote="true" data-toggle="tab">Ланчи</a>
+      </li>
+      <li class="<% if $menu=='sets' %>m-active<% else %> m-diactive<% end %>" >
+        <a href="/products/sets" data-remote="true" data-toggle="tab">Наборы</a>
+      </li>
+      <li class="<% if $menu=='hot_snacks' %>m-active<% else %>m-diactive<% end %> no-size">
+        <a href="/products/hot_snacks" data-remote="true" data-toggle="tab">Горячие закуски</a>
+      </li>
+      <li class="<% if $menu=='pasta' %>m-active<% else %>m-diactive<% end %>" >
+        <a href="/products/pasta" data-remote="true" data-toggle="tab">Паста</a>
+      </li>
+      <li class="<% if $menu=='salads' %>m-active<% else %>m-diactive<% end %>" >
+        <a href="/products/salads" data-remote="true" data-toggle="tab">Салаты</a>
+      </li>
+      <li class="<% if $menu=='soups' %>m-active<% else %>m-diactive<% end %>" >
+        <a href="/products/soups" data-remote="true" data-toggle="tab">Супы</a>
+      </li>
+      <li class="<% if $menu=='dessert' %>m-active<% else %>m-diactive<% end %>" >
+        <a href="/products/dessert" data-remote="true" data-toggle="tab">Десерты</a>
+      </li>
+      <li class="<% if $menu=='drinks' %>m-active<% else %>m-diactive<% end %>" >
+        <a href="" data-remote="true" data-toggle="tab">Напитки</a>
+        <ul class="sub-menu">
+          <li>
+            <a href="/products/drinks" data-remote="true" data-toggle="tab">Безалкогольные</a>
+          </li>
+          <li>
+            <a href="#" id="beer" class="beer" data-remote="true" data-toggle="tab">Пиво</a>
+          </li>
+        </ul>
+      </li>
+      <li class="<% if $japan %>m-active<% else %>m-diactive<% end %>">
+        <a href="#">Япония</a>
+        <ul class="sub-menu">
+          <li class="cat <% if $menu=='japan_sushi' %>m-active<% end %>" >
+            <a href="/products/japan_sushi" data-remote="true" data-toggle="tab">Суши</a>
+          </li>
+          <li class="<% if $menu=='japan_rolls' %>m-active<% end %>" >
+            <a href="/products/japan_rolls" data-remote="true" data-toggle="tab">Роллы</a>
+          </li>
+          <li class="<% if $menu=='japan_hot_rolls' %>m-active<% end %>" >
+            <a href="/products/japan_hot_rolls" data-remote="true" data-toggle="tab">Горячие роллы</a>
+          </li>
+          <li class="<% if $menu=='japan_special_roll' %>m-active<% end %>" >
+            <a href="/products/japan_special_roll" data-remote="true" data-toggle="tab">Фирменные роллы</a>
+          </li>
+          <li class="<% if $menu=='japan_sets' %>m-active<% end %>" >
+            <a href="/products/japan_sets" data-remote="true" data-toggle="tab">Наборы</a>
+          </li>
+          <li class="<% if $menu=='japan_others' %>m-active<% end %>" >
+            <a href="/products/japan_others" data-remote="true" data-toggle="tab">Прочее</a>
+          </li>
+        </ul>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<script>
+  beer = $('#beer')
+  beer.click(function() {
+    $('<div id="overlay"></div>')
+      .css('top', '0')
+      .css('opacity', '0')
+      .animate({'opacity': '0.8'}, 'slow')
+      .appendTo('body');
+
+    $('<div id="lightbox"></div>')
+      .appendTo('body');
+
+    $(' <div id="apply"><h4>Есть ли вам 18 лет?</h4><a class="variant2" href="/products/beer" data-remote="true" id="adultEn">Да</a><a class="variant2" href="#" id="notAdult">Нет</a></div>')
+      .load(function() {
+        var top = ($(window).height() - $('#lightbox').height()) / 2;
+        var left = ($(window).width() - $('#lightbox').width()) / 2;
+        $('#lightbox')
+          .css({
+            'top': top,
+            'left': left
+          })
+          .fadeIn();
+      })
+      .appendTo('#lightbox');
+    $('#overlay').click(function() {
+      removeLightbox();
+    });
+    $('#apply a').click(function() {
+      removeLightbox();
+    });
+    return false;
+
+  });
+</script>

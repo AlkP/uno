@@ -1,0 +1,19 @@
+development:
+  adapter: sqlite3
+  encoding: unicode
+  database: db/development.sqlite3
+  pool: 5
+production:
+  adapter: sqlite3
+  encoding: unicode
+  database: db/production.sqlite3
+  pool: 5
+#production:
+#  adapter: postgresql
+#  encoding: unicode
+#  host: postgres48.1gb.ru
+#  port: 5432
+#  database: xgb_unomom
+#  username: xgb_unomom
+#  password: e2aa8416vn
+#  pool: 5

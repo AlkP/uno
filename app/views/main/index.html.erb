@@ -1,0 +1,12 @@
+<% if current_user.nil? || current_user.admin? %>
+  <script>
+    $("#panel-details").html("<%= escape_javascript render 'main/form' %>");
+    $(".basket").html("<%= escape_javascript render 'line_items/create' %>");
+  </script>
+<% else %>
+  <% if current_user.manager? %>
+    <script>
+      $("#panel-details").html("<%= escape_javascript render 'pizzerias/manager' %>");
+    </script>
+  <% end %>
+<% end %>

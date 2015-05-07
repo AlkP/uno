@@ -1,0 +1,23 @@
+<div class="pname" ><%= @pizza.name %></div><br>
+<%= form_for @pizza do |f| %>
+  <table>
+    <% Size.all.each do |size| %>
+      <tr>
+        <td>
+          <label for="pizza_size"><%= size.name %></label><br>
+        </td>
+        <td>
+          <% if Price.where('size_id = ? and pizza_id = ?',size.id, @pizza.id).first %>
+            <input id="pizza_name" name="price[<%= size.id %>]" type="text" value="<%= Price.where('size_id = ? and pizza_id = ?',size.id, @pizza.id).first.price %>">
+          <% else %>
+            <input id="pizza_name" name="price[<%= size.id %>]" type="text" value="">
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+      <td><br><%= f.submit 'Сохранить', class: "variant1" %></td>
+    </tr>
+  </table>
+
+<% end %>
+

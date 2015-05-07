@@ -1,0 +1,132 @@
+<div class="popup__overlay">
+  <div class="popup_alkp">
+    <a href="#" class="popup__close">X</a>
+    <div class="popup-body">
+
+    </div>
+  </div>
+</div>
+<script>
+  function check(sel) {
+    check_v = $("#select_size_"+sel+" :selected").val() + "-" + $("#select_dough_"+sel+" :selected").val()
+    $('.price'+sel).text('Недоступна');
+    $('#select_'+sel+' option').each(function(){
+      if (this.text === check_v) {
+        size = $("#select_size_"+sel+" :selected").val();
+        dough = $("#select_dough_"+sel+" :selected").val();
+        price = $("#select_price_"+sel+" :selected").text();
+        name = $("#name_pizza_"+sel).text();
+        url = $("#url_pizza_"+sel).text();
+        $('.price'+sel).text($("#select_price_"+sel+" :selected").text()+' р.');
+        $('input#btn_keeper_'+sel).parent().parent().attr('action','/line_items?pizza=true&id='+sel+'&size='+size+'&dough='+dough+'&price='+price+'&name='+name+'&url='+url);
+      }
+    });
+    if ($('.price'+sel).text() === 'Недоступна') {
+      $('input#btn_keeper_'+sel).parent().parent().attr('action','/line_items?error=true');
+    }
+  }
+  function select_size(sel, id) {
+    $("#select_size_"+sel).val(id)
+    $("#select_price_"+sel).val(id)
+    check(sel);
+  }
+  function select_dough(sel, id) {
+    $("#select_dough_"+sel).val(id)
+    check(sel);
+  }
+</script>
+
+<%= link_to "Новая Пицца", new_pizza_path(sets: @new_pizza), class: "cat cat-active" %>
+<div class="Table-Pizza" >
+  <table >
+    <tr>
+      <td>
+        Наименование
+      </td>
+      <td width="250">
+        Фото
+      </td>
+      <td>
+        Описание
+      </td>
+      <td colspan="2" >
+        Цена
+      </td>
+      <td width="50">
+        Действия
+      </td>
+    </tr>
+  </tr>
+<% col = Size.all.count %>
+  <% @pizzas.each do |f| %>
+    <tr>
+      <td rowspan="<%= col+1 %>">
+        <%= link_to f.name, pizza_url(:id =>f.id ), class: "variant3" %>
+      </td>
+      <td rowspan="<%= col+1 %>">
+        <div class="pimg" style="background-image: url('<%= f.view_products.url %>')"></div>
+      </td>
+      <td rowspan="<%= col+1 %>">
+        <div><%= f.description %></div>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+      <td rowspan="<%= col+1 %>" style="text-align: center;">
+        <a class="popup__toggle"
+           data-remote="true"
+           href="/pizza/change_price/<%= f.id %>"
+           onclick="" >
+          <img src="/assets/control/Money32.gif"></a>
+
+        <br>
+
+        <a class="popup__toggle"
+           data-remote="true"
+           href="/pizza/change_rkeeper/<%= f.id %>"
+           onclick="" >
+          <img src="/assets/control/RKeeper32.gif"></a>
+
+        <br>
+
+        <a data-confirm="Вы действительно хотите удалить пиццу?" data-method="delete" href="/pizza/<%= f.id %>" rel="nofollow">
+          <img src="/assets/control/Delete32.gif">
+        </a>
+      </td>
+    </tr>
+    <% Size.all.each do |z| %>
+      <tr>
+        <td height="<%= (198-(14*col))/col %>">
+          <%= z.name %>
+        </td>
+        <td>
+          <% if Price.where('size_id = ? and pizza_id = ?', z.id, f.id ).first %>
+            <%= Price.where('size_id = ? and pizza_id = ?', z.id, f.id ).first.price %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </table>
+</div>
+
+<script>
+  p = $('.popup__overlay')
+  $('.popup__toggle').click(function() {
+    p.css('display', 'block')
+  })
+  p2 = $('.popup__overlay2')
+  $('.popup__toggle2').click(function() {
+    p2.css('display', 'block')
+  })
+  p.click(function(event) {
+    e = event || window.event
+    if (e.target == this) {
+      $(p).css('display', 'none')
+    }
+  })
+  $('.popup__close').click(function() {
+    p.css('display', 'none')
+  })
+</script>

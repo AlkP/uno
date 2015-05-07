@@ -1,0 +1,96 @@
+<ul class="drop" style="position:absolute; left:235px; top: 360px;">
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/children_event">Детские праздники</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/restaurants_pushkin">г.Пушкин</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/restaurants_peter">г.Санкт-Петербург</a>
+  </li>
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+    <!--<a href="/restaurants_kolpino">г.Колпино</a>-->
+  <!--</li>-->
+  <!--<li class="m-active" style="width: 120px;">-->
+    <!--<a href="/restaurants_terlyaevo">пос.Тярлево</a>-->
+  <!--</li>-->
+</ul>
+
+<div style="margin-left: 45px; width: 431px; position: relative;" class="restraunts">
+
+  <div>
+    <br><b><big>пос. Тярлево,
+    <br>ул. Нововестинская, д. 2-а
+    <br>Тел.: 244-28-44</big></b>
+    <br>
+    <br>Ежедневно с 11.00 до 23.00
+    <br>работает кафе и бесплатная доставка
+    <br><b>(<a href="index.php?class=dos&amp;dos_id=4">доставка</a> в течение часа).</b>
+    <br>
+    <br><a href="http://vkontakte.ru/club32817760" target="_blank">группа Вконтакте</a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+  </div>
+</div>
+
+
+<script>
+  function positionLightboxImage() {
+    var top = ($(window).height() - $('#lightbox').height()) / 2;
+    var left = ($(window).width() - $('#lightbox').width()) / 2;
+    $('#lightbox')
+      .css({
+        'top': top,
+        'left': left
+      })
+      .fadeIn();
+  }
+
+  function removeLightbox() {
+    $('#overlay, #lightbox')
+      .fadeOut('slow', function() {
+        $(this).remove();
+        $('body').css('overflow-y', 'auto'); // show scrollbars!
+      });
+  }
+
+
+  $(document).ready(function(){
+    $('a.lightbox').click(function(e) {
+      $('body').css('overflow-y', 'hidden'); // hide scrollbars!
+
+      $('<div id="overlay"></div>')
+        .css('top', '0')
+        .css('opacity', '0')
+        .animate({'opacity': '0.8'}, 'slow')
+        .appendTo('body');
+
+      $('<div id="lightbox"></div>')
+        .hide()
+        .appendTo('body');
+
+      $('<img id="light-img">')
+        .attr('src', $(this).attr('href'))
+        .load(function() {
+          positionLightboxImage();
+        })
+        .click(function() {
+          removeLightbox();
+        })
+        .appendTo('#lightbox');
+
+      $('#overlay').click(function() {
+        removeLightbox();
+      });
+      return false;
+    });
+  });
+</script>

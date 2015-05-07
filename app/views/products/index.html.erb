@@ -1,0 +1,48 @@
+<br><br>
+<%= link_to "Новое наименование", new_product_path, class: "cat cat-active" %>
+<br><br>
+<form accept-charset="UTF-8" action="/products" id="filter" method="get">
+  <select id="products_category" name="products[category]">
+    <option value="all">Все продукты</option>
+    <option value="lunches">Ланчи</option>
+    <option value="sets">Наборы</option>
+    <option value="hot_snacks">Горячие закуски</option>
+    <option value="pasta">Паста</option>
+    <option value="salads">Салаты</option>
+    <option value="soups">Супы</option>
+    <option value="dessert">Десерты</option>
+    <option value="drinks">Напитки</option>
+    <option value="beer">Пиво</option>
+    <option value="others">Другое</option>
+    <option value="japan_sushi">Япония - Суши</option>
+    <option value="japan_rolls">Япония - Роллы</option>
+    <option value="japan_hot_rolls">Япония - Горячие роллы</option>
+    <option value="japan_special_roll">Япония - Фирменные роллы</option>
+    <option value="japan_sets">Япония - Наборы</option>
+    <option value="japan_others">Япония - Прочее</option>
+  </select>
+  <input name="commit" type="submit" value="Применить фильтр">
+</form>
+
+<div class="Table-Pizza" >
+  <table>
+    <!--<thead>-->
+    <tr>
+      <th>Наименование</th>
+      <th>Категория</th>
+      <th>Описание</th>
+      <th>Последнее обновление товара</th>
+    </tr>
+    <!--</thead>-->
+    <!--<tbody>-->
+    <% @products.each do |f| %>
+      <tr>
+        <td class="middle-size"><%= link_to f.name, product_url(:id =>f.id ) %></td>
+        <td><%= f.category %></td>
+        <td><%= f.description %></td>
+        <td><%= f.updated_at.time.strftime('%m/%d/%Y %H:%m') %></td>
+      </tr>
+    <% end %>
+    <!--</tbody>-->
+  </table>
+</div>

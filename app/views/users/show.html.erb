@@ -1,0 +1,72 @@
+<h3><%= @user.name %></h3><br>
+<div class="modal-body">
+  <%= form_for @user, :url => user_path(@user) do |f| %>
+
+    <table class="table table-striped">
+      <tr>
+        <td>
+          <%= f.label :Имя %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td><br></td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Админ? %><br>
+        </td>
+        <td>
+          <%= f.check_box :admin %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :Менеджер? %><br>
+        </td>
+        <td>
+          <%= f.check_box :manager %>
+        </td>
+      </tr>
+      <tr>
+        <td><br></td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :'Пиццерия' %><br>
+        </td>
+        <td>
+          <%= f.select(:pizzeria_id, @pizzerias.map {|f| [f.name, f.id]}, selected: @user.pizzeria_id ) %>
+        </td>
+      </tr>
+      <tr class="warning">
+        <td><br><br>
+          Пароль
+        </td>
+        <td><br><br>
+          <%= f.password_field :password %>
+        </td>
+      </tr>
+      <tr class="error">
+        <td>
+          Подтверждение пароля
+        </td>
+        <td>
+          <%= f.password_field :password_confirmation %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <br><br>
+          <%= link_to 'Назад', users_path %> |
+          <%= f.submit 'Сохранить', class: "cat cat-active pan-pizza"%>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<div class="modal-footer">
+
+</div>

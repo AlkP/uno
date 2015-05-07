@@ -1,0 +1,44 @@
+<header>
+  <div class="logo">
+    <a href="/index" >
+      <img src="/assets/others/logo.png" alt="logo-first" />
+    </a>
+  </div>
+  <div class="head-info">
+    <div class="cart">
+      <p>Стоимость заказа: <span><amount2><%= @amount %></amount2> р.</span></p>
+      <p>Количество: <span><count2><%= @count %></count2></span></p>
+    </div>
+    <div class="number">
+      <a href="/call" data-remote="true" data-toggle="tab" onclick="$('#show_modal')[0].click()">
+        <p>244 2 888</p>
+      </a>
+      <p class="telephone-title">ИЛИ НАЖМИТЕ И МЫ ВАМ ПЕРЕЗВОНИМ</p>
+    </div>
+    <div class="sec-logo">
+      <img src="/assets/others/logo-sec.png" alt="logo-second" />
+    </div>
+  </div>
+  <div class="css-carousel">
+    <img class="css-img" src="/assets/head-slider/new0.gif" />
+    <img class="css-img" src="/assets/head-slider/new1.gif" />
+    <img class="css-img" src="/assets/head-slider/new2.gif" />
+    <img class="css-img" src="/assets/head-slider/new3.gif" />
+    <img class="css-img" src="/assets/head-slider/new4.gif" />
+    <img class="css-img" src="/assets/head-slider/new5.gif" />
+  </div>
+  <nav  class="head-nav">
+    <ul>
+      <li><a href="/">Меню</a></li>
+      <li>
+        <a href="/children_event">Рестораны</a>
+      </li>
+      <li>
+        <a href="/delivery_pushkin">Доставка</a>
+      </li>
+      <li><a href="<%= uno_bonus_path %>">Uno-бонус</a></li>
+      <li class="last"><a href="/stock">Акции</a></li>
+    </ul>
+  </nav>
+  <div class="clear"></div>
+</header>

@@ -1,0 +1,100 @@
+<script>
+  var count = <%= @count %>;
+  var amount = <%= @amount %>;
+  $('count2').text(count);
+  $('amount2').text(amount);
+</script>
+
+<div class="basket-header">
+  <% unless $warning_address or $warning_pizzeria %>
+    <% unless $send_order %>
+      <p><strong>Ваша корзина</strong></p>
+      <small>(Товаров <count><%= @count %></count> на сумму <amount><%= @amount %></amount> р.)</small>
+    <% else %>
+      Заказ отправлен
+    <% end %>
+  <% else %>
+    Внимание
+  <% end %>
+</div>
+<div class="basket-body">
+  <% unless $warning_pizzeria %>
+    <% unless $warning_address %>
+      <% unless $send_order %>
+        <% unless @pr.nil? %>
+          <% @pr.each do |f| %>
+            <% rnd = ((Random.rand + 1) * 10000).to_i %>
+            <script>var rnd = parseInt( ( Math.floor( Math.random( ) * (8) ) + 1 ) * 10000)</script>
+            <div class="one-check onremove<%= rnd %>">
+              <% if f[:pizza] %>
+                <img src="<%= f[:url] %>" alt="pizza" />
+                <small>( <quantity class="quantity_<%= f[:id] %>"><%= f[:quantity] %></quantity> ) <%= f[:name] %></small>
+              <% else %>
+                <img src="<%= Products.find(f[:id]).view_products.url %>" alt="pizza" />
+                <small>( <quantity class="quantity_<%= f[:id] %>"><%= f[:quantity] %></quantity> ) <%= f[:name] %></small>
+              <% end %>
+                <small><%= f[:price] %> р.</small>
+              <% if f[:pizza] %>
+              <a data-method="delete"
+                 data-remote="true"
+                 data-toggle="tab"
+                 class="del"
+                 href="/line_items/<%= f[:id] %>?pizza=true&size=<%= f[:size] %>&dough=<%= f[:dough] %>"
+                 onclick="count=count-parseInt(<%= f[:quantity] %>);
+                   amount=amount-((<%= f[:price] %>)*parseFloat(<%= f[:quantity] %>));
+                   $('count').text(count);$('amount').text(amount);$('count2').text(count);$('amount2').text(amount);
+                   $('.onremove<%= rnd %>').remove();"
+                 rel="nofollow"><img src="/assets/control/del.png" alt="delete" /></a>
+              <% else %>
+                <a data-method="delete"
+                   data-remote="true"
+                   data-toggle="tab"
+                   class="del"
+                   href="/line_items/<%= f[:id] %>?pizza=false&size=<%= f[:size] %>"
+                   onclick="count=count-parseInt(<%= f[:quantity] %>);
+                     amount=amount-((<%= f[:price] %>)*parseFloat(<%= f[:quantity] %>));
+                     $('count').text(count);$('amount').text(amount);$('count2').text(count);$('amount2').text(amount);
+                     $('.onremove<%= rnd %>').remove();"
+                   rel="nofollow"><img src="/assets/control/del.png" alt="delete" /></a>
+              <% end %>
+            </div>
+            <div class="clear"></div>
+          <% end %>
+        <% end %>
+      <% else %>
+        Спасибо, Ваш заказ принят.<br><br>
+
+        Мы Вам перезвоним в течении <%= $waiting_time %>
+      <% end %>
+    <% else %>
+      Извините, Ваш район не обслуживается.
+    <% end %>
+  <% else %>
+    Извините, Прийом заказов приостановлен.
+  <% end %>
+</div>
+
+<% unless $warning_pizzeria %>
+  <% unless $warning_address %>
+    <% unless $send_order %>
+      <div class="basket-footer">
+        <a href="/sendforms/true" class="checkout">Оформить заказ</a>
+      </div>
+    <% else %>
+      <hr/>
+      <div class="basket-footer">
+        <a href="/sendforms/false" class="checkout">Перезаказать</a>
+      </div>
+    <% end %>
+  <% else %>
+    <hr/>
+    <div class="basket-footer">
+      <a href="/sendforms/false" class="checkout">Перезаказать</a>
+    </div>
+  <% end %>
+<% else %>
+  <hr/>
+  <div class="basket-footer">
+    <a href="/sendforms/false" class="checkout">Перезаказать</a>
+  </div>
+<% end %>

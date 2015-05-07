@@ -1,0 +1,334 @@
+
+<%= javascript_include_tag "street_check.js" %>
+<%= javascript_include_tag "street_check_min.js" %>
+<%= javascript_include_tag "sendforms.js" %>
+
+<%= form_for @send_form do |f| %>
+  <div class="dop-contaner">
+  <div class="alkp_container">
+    <p class="date_time"> <%= Time.now() %> </p>
+    <div class="info">
+      <% @pr.each do |pr| %>
+        <% rnd = ((Random.rand + 1) * 10000).to_i %>
+        <div class="one-item-box one-check onremove<%= rnd %>">
+
+          <% if pr[:pizza] %>
+
+            <div class="left-info">
+              <p class="item_name">Пицца<br><span>«<%= pr[:name] %>»</span></p>
+              <p class="idish-info"><%= Pizza.find(pr[:id]).description %></p>
+            </div>
+<!--             <br><br> -->
+
+            <div class="hidden_alkp">
+              <select id="select_price_<%= rnd %>" name="select_price[<%= rnd %>]">
+                <!--< % el = Rkeeper.where('code = ?', pr[:rkeeper]).first.size_id %>-->
+                <% Price.where('pizza_id = ?', pr[:id]).order('id ASC').each do |price| %>
+                  <option value="<%= price.size_id %>"<% if price.size_id == pr[:size] %> selected="selected"<% end %>><%= price.price %></option>
+                <% end %>
+              </select>
+              <select id="select_rkeeper_<%= rnd %>">
+                <% Rkeeper.where('pizza_id = ?', pr[:id]).order('id ASC').each do |rkeeper| %>
+                  <option value="<%= rkeeper.id %>"><%= rkeeper.size_id.to_s + '-' + rkeeper.dough_id.to_s + '-' + rkeeper.sauce_id.to_s %></option>
+                <% end %>
+              </select>
+            </div>
+            <!--# Размер-->
+            <div class="right-info">
+              <div class="item-box">
+                <select id="size_<%= rnd %>" name="size[<%= rnd %>]" onchange="change_price(<%= rnd %>);change_value('<%= rnd %>');">
+                  <% Size.all.each do |size| %>
+                    <% Price.where('pizza_id = ?', pr[:id]).order('id ASC').each do |price| %>
+                      <% if price.size_id == size.id %>
+                        <% size_var = Rkeeper.where('size_id = ? and pizza_id = ?',pr[:size], pr[:id]) %>
+                        <% if size_var.first %>
+                          <option value="<%= size.id %>"<% if size.id == pr[:size] %> selected="selected"<% end %>><%= size.name.to_s %></option>
+                        <% end %>
+                    <% end %>
+                    <% end %>
+                  <% end %>
+                </select>
+                <label class="sizep">размер</label>
+              </div>
+
+              <!--# Тесто-->
+              <div class="item-box" >
+                <select id="dough_<%= rnd %>" name="dough[<%= rnd %>]" onchange="change_value('<%= rnd %>');">
+                  <% Dough.all.each do |dough| %>
+                    <% dough_var = Rkeeper.where('dough_id = ? and pizza_id = ?',pr[:dough], pr[:id]) %>
+                    <% if dough_var.first %>
+                      <option value="<%= dough.id %>"<% if dough.id == pr[:dough] %> selected="selected"<% end %>><%= dough.name.to_s %></option>
+                    <% end %>
+                  <% end %>
+                </select>
+                <label class="pduff">тесто</label>
+              </div>
+
+              <!--# Соус-->
+              <div class="item-box">
+                <select  id="sauce_<%= rnd %>" name="sauce[<%= rnd %>]" onchange="change_value('<%= rnd %>');">
+                  <% Sauce.all.each do |sauce| %>
+                    <% if Rkeeper.where('sauce_id = ? and pizza_id = ?',sauce.id, pr[:id]).first %>
+                      <option value="<%= sauce.id %>"><%= sauce.name.to_s %></option>
+                    <% end %>
+                  <% end %>
+                </select>
+                <label class="sous">соус-основа</label>
+              </div>
+
+              <% if Pizza.find(pr[:id]).classification_id == 6 %>
+                <script>
+                  $('.hhi<%= rnd %>').hide();
+                </script>
+              <% end %>
+
+              <div class="qpc-box" >
+                <div class="quantity">
+                  <input id="quantity_<%= rnd %>" onchange="change_value('<%= rnd %>')" class="inp-quant" name="quantity[<%= rnd %>][<%= pr[:id] %>]" type="number" value="<%= pr[:quantity] %>" />
+                  <label for="">Количество</label>
+                </div>
+                <div class="price-box"><span class="amount-to-sum total-<%= rnd %>" ><%= pr[:price] * pr[:quantity] %></span> р.</div>
+                <script>change_quantity('<%= pr[:id] %>');</script>
+                <a data-method="delete"
+                   data-remote="true"
+                   data-toggle="tab"
+                   class="del"
+                   onclick="$('.onremove<%= rnd %>').remove();total_amount_order();"
+                   href="/line_items/<%= pr[:id] %>?pizza=true&size=<%= pr[:size] %>&dough=<%= pr[:dough] %>"
+                   rel="nofollow"><img src="/assets/control/del.png" alt="delete" /></a>
+              </div>
+            </div>
+
+          <% else %>
+
+            <% product = Products.find(pr[:id]) %>
+            <div class="left-info">
+              <p class="item_name">
+                <%= case product.category
+                      when "lunches"
+                        "Ланч"
+                      when "sets"
+                        "Набор"
+                      when "hot_snacks"
+                        "Горячая закуска"
+                      when "pasta"
+                        "Паста"
+                      when "salads"
+                        "Салат"
+                      when "soups"
+                        "Суп"
+                      when "dessert"
+                        "Десерт"
+                      when "drinks"
+                        "Напиток"
+                      when "beer"
+                        "Пиво"
+                      when "japan_sushi"
+                        "Суши"
+                      when "japan_rolls"
+                        "Ролл"
+                      when "japan_hot_rolls"
+                        "Горячий ролл"
+                      when "japan_special_roll"
+                        "Фирменный ролл"
+                      when "japan_sets"
+                        "Япония - Набор"
+                      when "japan_others"
+                        "Япония - Прочее"
+                      else
+                        product.category
+                    end
+                %><br>
+                <span>«<%= pr[:name] %>»</span></p>
+              <% unless pr[:set] %>
+                <p class="item_tip"><%= product.description %></p>
+              <% end %>
+            </div>
+
+            <div class="right-info">
+              <div class="item-box <% if pr[:set] %>hidden_alkp<% end %>">
+                <% if product.how_many == 3 %>
+                  <select class="cl-sizep"
+                          id="select_name_product_<%= rnd %>"
+                          name="name_products[<%= rnd %>][<%= pr[:id] %>]"
+                          onchange="change_quantity_product('<%= rnd %>');">
+                    <option value="1"<% if pr[:size] == 1 %> selected="selected"<% end %>><%= product.name1 %></option>
+                    <option value="2"<% if pr[:size] == 2 %> selected="selected"<% end %>><%= product.name2 %></option>
+                    <option value="3"<% if pr[:size] == 3 %> selected="selected"<% end %>><%= product.name3 %></option>
+                  </select>
+                  <label class="sizep">Параметр</label>
+                <% else %>
+                  <span><%= product.name1 %></span><br>
+                <% end %>
+              </div>
+
+              <div class="hidden_alkp">
+                <select class="cl-sizep"
+                        id="price_product_<%= rnd %>">
+                  <option value="1"<% if pr[:size] == 1 %> selected="selected"<% end %>><%= product.price1 %></option>
+                  <option value="2"<% if pr[:size] == 2 %> selected="selected"<% end %>><%= product.price2 %></option>
+                  <option value="3"<% if pr[:size] == 3 %> selected="selected"<% end %>><%= product.price3 %></option>
+                </select>
+              </div>
+              <div class="hidden_alkp">
+                <input id="modifier_<%= rnd %>"
+                       name="modifier[<%= rnd %>][<%= pr[:id] %>]"
+                       value="<%= product.modifier %>" />
+              </div>
+              <div class="qpc-box" >
+                <div class="quantity">
+              <!--<div class="quanti-box">-->
+                  <input class="inp-quant"
+                         id="quantity_<%= rnd %>"
+                         onchange="change_quantity_product('<%= rnd %>');"
+                         name="quantity_product[<%= rnd %>][<%= pr[:id] %>]"
+                         type="number"
+                         value="<%= pr[:quantity] %>" />
+                  <label class="quant">количество</label>
+                </div>
+                <div class="price-box"><span class="amount-to-sum total-<%= rnd %>" ><%= pr[:price] %></span> р.</div>
+                <script>change_quantity_product('<%= rnd %>');</script>
+                <a data-method="delete"
+                   data-remote="true"
+                   data-toggle="tab"
+                   class="del"
+                   onclick="$('total').text(parseFloat($('total').text())-parseFloat($('.total-<%= pr[:rkeeper] %>').text()));
+                     $('.onremove<%= rnd %>').remove();"
+                   href="/line_items/<%= pr[:id] %>?pizza=false&size=<%= pr[:size] %>"
+                   rel="nofollow"><img src="/assets/control/del.png" alt="delete" /></a>
+              </div>
+            </div>
+
+            <!--Формирование Набора-->
+
+            <% if pr[:set] %>
+              <div class="hidden_alkp">
+                <input id="modifier_<%= rnd %>"
+                     name="modifier[<%= rnd %>][<%= pr[:id] %>]"
+                     value="true" />
+                <input name="set_access[<%= rnd %>]"
+                       value="<%= pr[:id] %>" />
+              </div>
+              <div class="set-info">
+                <% variant = Variant.where('products_id = ? ', pr[:id]) %>
+                <% variant.each do |vv| %>
+                  <div class="set-item">
+                    <% content = Content.where('variants_id = ?', vv.id) %>
+                    <% if content.size == 1 %>
+                      <% if content.first.idd == 99301991 %>
+                        Требуется добавить пиццу в набор
+                      <% else %>
+                        <% product_set = Products.find(content.first.idd) %>
+                        <p class="item-name"><%= product_set.name %></p>
+                      <% end %>
+                    <% else %>
+                      <p class="item-name item-name-with-select">
+                        <%= case Products.find(content.first.idd).category
+                              when "lunches"
+                                "Ланч"
+                              when "sets"
+                                "Набор"
+                              when "hot_snacks"
+                                "Горячая закуска"
+                              when "pasta"
+                                "Паста"
+                              when "salads"
+                                "Салат"
+                              when "soups"
+                                "Суп"
+                              when "dessert"
+                                "Десерт"
+                              when "drinks"
+                                "Напиток"
+                              when "beer"
+                                "Пиво"
+                              when "japan_sushi"
+                                "Суши"
+                              when "japan_rolls"
+                                "Ролл"
+                              when "japan_hot_rolls"
+                                "Горячий ролл"
+                              when "japan_special_roll"
+                                "Фирменный ролл"
+                              when "japan_sets"
+                                "Япония - Набор"
+                              when "japan_others"
+                                "Япония - Прочее"
+                              else
+                                product.category
+                            end
+                        %>
+                      </p>
+                      <div class="set-select">
+                        <select class="" name="set[<%= rnd %>][<%= vv.id %>]">
+                          <% content.each do |cc| %>
+                            <% product_set = Products.find(cc.idd) %>
+                            <option value="<%= cc.id %>"><%= product_set.name %> : <%= name_size_content(cc.idd, cc.size) %></option>
+                          <% end %>
+                        </select>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+
+
+        </div>
+        <div class="clear"></div>
+
+      <% end %>
+
+      <div class="amount-to-sum-total total-price">Стоимость заказа: <total><%= @amount %></total> р.</div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+    <h4 class="delivery-adress">Адрес доставки:</h4>
+    <form>
+      <div class="address">
+          <label class="name">Имя</label>
+          <%= f.text_field :name %>
+          <div class="clear"></div>
+          <label class="phone">Телефон</label>
+          <input class="inp-telephone" id="sendform_phone" name="sendform[phone]" type="tel">
+          <p class="tepelphone-inf">Номер в 10 значном формате код+номер телефона. Пример 9991112233. Для городского номера необходимо указать
+            код города.</p>
+          <div class="clear"></div>
+          </br>
+          <label class="city">Город</label>
+          <select class="sl-city" name="sendform[town]">
+            <option value="7800000000000">Санкт-Петербург</option>
+            <option value="7800000300000">Колпино</option>
+            <option value="7800000700000">Павловск</option>
+            <option value="7800000900000">Пушкин</option>
+          </select>
+          <div class="clear"></div>
+          <label class="street">Улица</label>
+          <%= f.text_field :street, :autocomplete => "off" %>
+          <div id="kladr_autocomplete">
+            <ul class="kladr_autocomplete_street"></ul>
+            <div class="spinner kladr_autocomplete_street_spinner"></div>
+          </div>
+          <div class="clear"></div>
+          <label class="house">Номер дома</label>
+          <input class="inp-house" id="sendform_house" name="sendform[house]" type="text">
+          <label class="house_2">Корпус</label>
+          <input class="inp-house_2" id="sendform_housing" name="sendform[housing]" type="text">
+          <label class="apartaments">№ квартиры/офиса</label>
+          <input class="inp-apartaments" id="sendform_apartment" name="sendform[apartment]" type="text">
+          <div class="clear"></div>
+          <label class="at-time">Отсроченная доставка к точному времени</label>
+          <input class="inp-at-time" type="checkbox">
+          <div class="clear"></div>
+          <label class="comments">Комментарии к заказу</label>
+          <div class="clear"></div>
+          <textarea class="text-comment" cols="62" rows="12" id="sendform_description" name="sendform[description]"></textarea>
+          <input class="submit-order" name="commit" type="submit" value="Заказать" >
+      </div>
+    </form>
+  </div>
+<% end %>
+
+<script>$('.hidden_alkp').hide()</script>

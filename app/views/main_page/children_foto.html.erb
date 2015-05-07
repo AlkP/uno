@@ -1,0 +1,114 @@
+<ul class="drop" style="position:absolute; left:235px; top: 360px;">
+  <li class="m-active" style="width: 145px;">
+    <a href="/children_event">Детские праздники</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/restaurants_pushkin">г.Пушкин</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/restaurants_peter">г.Санкт-Петербург</a>
+  </li>
+  <!--<li class="m-active" style="width: 120px;">-->
+  <!--<a href="/restaurants_kolpino">г.Колпино</a>-->
+  <!--</li>-->
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+  <!--<a href="/restaurants_terlyaevo">пос.Тярлево</a>-->
+  <!--</li>-->
+</ul>
+
+
+<%= stylesheet_link_tag "fotorama.css" %>
+<%= javascript_include_tag "fotorama.js" %>
+
+<br><br><br>
+<div class="fotorama resto" data-width="80%" data-arrows="true" data-loop="true">
+  <img src="/assets/kids-gallery/1.jpg" alt="">
+  <img src="/assets/kids-gallery/2.jpg" alt="">
+  <img src="/assets/kids-gallery/3.jpg" alt="">
+  <img src="/assets/kids-gallery/4.jpg" alt="">
+  <img src="/assets/kids-gallery/5.jpg" alt="">
+  <img src="/assets/kids-gallery/6.jpg" alt="">
+  <img src="/assets/kids-gallery/7.jpg" alt="">
+  <img src="/assets/kids-gallery/8.jpg" alt="">
+  <img src="/assets/kids-gallery/9.jpg" alt="">
+  <img src="/assets/kids-gallery/10.jpg" alt="">
+  <img src="/assets/kids-gallery/11.jpg" alt="">
+  <img src="/assets/kids-gallery/12.jpg" alt="">
+  <img src="/assets/kids-gallery/13.jpg" alt="">
+  <img src="/assets/kids-gallery/14.jpg" alt="">
+  <img src="/assets/kids-gallery/15.jpg" alt="">
+  <img src="/assets/kids-gallery/16.jpg" alt="">
+  <img src="/assets/kids-gallery/17.jpg" alt="">
+  <img src="/assets/kids-gallery/18.jpg" alt="">
+  <img src="/assets/kids-gallery/19.jpg" alt="">
+  <img src="/assets/kids-gallery/20.jpg" alt="">
+  <img src="/assets/kids-gallery/21.jpg" alt="">
+  <img src="/assets/kids-gallery/22.jpg" alt="">
+  <img src="/assets/kids-gallery/23.jpg" alt="">
+  <img src="/assets/kids-gallery/24.jpg" alt="">
+  <img src="/assets/kids-gallery/25.jpg" alt="">
+  <img src="/assets/kids-gallery/26.jpg" alt="">
+  <img src="/assets/kids-gallery/27.jpg" alt="">
+  <img src="/assets/kids-gallery/28.jpg" alt="">
+  <img src="/assets/kids-gallery/29.jpg" alt="">
+  <img src="/assets/kids-gallery/30.jpg" alt="">
+  <img src="/assets/kids-gallery/31.jpg" alt="">
+  <img src="/assets/kids-gallery/32.jpg" alt="">
+  <img src="/assets/kids-gallery/33.jpg" alt="">
+
+</div>
+
+
+
+<script>
+  function positionLightboxImage() {
+    var top = ($(window).height() - $('#lightbox').height()) / 2;
+    var left = ($(window).width() - $('#lightbox').width()) / 2;
+    $('#lightbox')
+      .css({
+        'top': top,
+        'left': left
+      })
+      .fadeIn();
+  }
+
+  function removeLightbox() {
+    $('#overlay, #lightbox')
+      .fadeOut('slow', function() {
+        $(this).remove();
+        $('body').css('overflow-y', 'auto'); // show scrollbars!
+      });
+  }
+
+
+  $(document).ready(function(){
+    $('a.lightbox').click(function(e) {
+      $('body').css('overflow-y', 'hidden'); // hide scrollbars!
+
+      $('<div id="overlay"></div>')
+        .css('top', '0')
+        .css('opacity', '0')
+        .animate({'opacity': '0.8'}, 'slow')
+        .appendTo('body');
+
+      $('<div id="lightbox"></div>')
+        .hide()
+        .appendTo('body');
+
+      $('<img id="light-img">')
+        .attr('src', $(this).attr('href'))
+        .load(function() {
+          positionLightboxImage();
+        })
+        .click(function() {
+          removeLightbox();
+        })
+        .appendTo('#lightbox');
+
+      $('#overlay').click(function() {
+        removeLightbox();
+      });
+      return false;
+    });
+  });
+</script>

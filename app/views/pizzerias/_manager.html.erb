@@ -1,0 +1,54 @@
+<h3></h3><br>
+
+<%= form_for @pizzeria, :url => pizzeria_path(@pizzeria) do |f| %>
+  <table class="features-table">
+    <thead>
+    <tr>
+      <td><%= @pizzeria.name %></td>
+      <td class="grey"></td>
+      <td class="grey" nowrap></td>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <td nowrap><%= link_to 'Назад', sauces_path %></td>
+      <td class="grey"></td>
+      <td class="grey"><%= f.submit 'Сохранить', class: "cat cat-active pan-pizza"%></td>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td nowrap></td>
+      <td class="grey"><%= f.label :'Принимать заказы' %><br></td>
+      <td class="grey"><%= f.check_box :work %></td>
+    </tr>
+    <tr>
+      <td nowrap></td>
+      <td class="grey"><%= f.label :'Переадресовать заказ' %><br></td>
+      <td class="grey"><%= f.check_box :redirect %></td>
+    </tr>
+    <tr>
+      <td nowrap></td>
+      <td class="grey"><%= f.label :'Переадресовать на' %><br></td>
+      <td class="grey">
+        <!--< %= f.text_field :redirect_email %>-->
+        <select class="cl-sizep" id="pizzeria_redirect_email" name="pizzeria[redirect_email]" >
+          <% Pizzeria.all.each do |pizzeria| %>
+            <option value="<%= pizzeria.id %>"<% if pizzeria.id.to_s == @pizzeria.redirect_email %> selected="selected"<% end %>><%= pizzeria.name %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap></td>
+      <td class="grey"><%= f.label :'Время в очереди' %><br></td>
+      <td class="grey"><%= f.select(:waiting_time, @waiting_time) %></td>
+    </tr>
+    </tbody>
+  </table>
+
+<% end %>
+
+

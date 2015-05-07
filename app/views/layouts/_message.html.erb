@@ -1,0 +1,13 @@
+<% init_variable %>
+
+<% if ($menu=='lunches') || ($menu=='sets') %>
+  <% if @check_to_lunch %>
+    <!--<script>lanchNotAvailable();</script>-->
+  <% else %>
+    <!--<script>willBeSoon(< %= @lunch_hours %>, < %= @lunch_minutes %>);</script>-->
+  <% end %>
+<% else %>
+  <% unless @check_to_work %>
+    <script>appendClosetTimeBlock('23:00','11:00');</script>
+  <% end %>
+<% end %>

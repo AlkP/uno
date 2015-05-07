@@ -1,0 +1,32 @@
+<%
+   size_arr = {}
+   Size.all.each do |f|
+     size_arr[f.id] = f.name
+   end
+   dough_arr = {}
+   Dough.all.each do |f|
+     dough_arr[f.id] = f.name
+   end
+   sauce_arr = {}
+   Sauce.all.each do |f|
+     sauce_arr[f.id] = f.name
+   end
+%>
+
+<%= form_for @piz do |f| %>
+  <input class="hidden" name="idd" type="text" value="<%= @piz %>">
+  <br>
+  <select name="product_id">
+    <% @products.each do |f| %>
+      <option value="<%= f[:id] %>"><%= f[:name] %></option>
+    <% end %>
+  </select>
+  <br>
+  <select name="size">
+    <option value="1">Параметр 1</option>
+    <option value="2">Параметр 2</option>
+    <option value="3">Параметр 3</option>
+  </select>
+
+  <td><%= f.submit 'Сохранить', class: "variant1" %></td>
+<% end %>

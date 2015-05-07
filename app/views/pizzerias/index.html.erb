@@ -1,0 +1,9 @@
+<table>
+  <% @pizzerias.each do |f| %>
+    <tr>
+      <td>
+        <%= link_to f.name, pizzeria_path(f.id) , class: "variant3" %>
+      </td>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,168 @@
+
+<% first = true %>
+<% @classification.each do |class_p| %>
+  <% if first
+    first = false
+  else
+  %>
+  <% end %>
+  <% @pizzas.each do |f| %>
+    <% if class_p.id == f.classification_id %>
+      <div class="box">
+        <div class="hidden">
+          <div id="name_pizza_<%= f.id %>"><%= f.name %></div>
+          <div id="url_pizza_<%= f.id %>"><%= f.view_products.url %></div>
+          <select id="select_size_<%= f.id %>" name="select_size[<%= f.id %>]"></select>
+          <select id="select_dough_<%= f.id %>" name="select_dough[<%= f.id %>]"></select>
+          <select id="select_price_<%= f.id %>" name="select_price[<%= f.id %>]">
+            <% unless @hash_price[f.id].nil? %>
+              <% @hash_price[f.id].each_key do |size_id| %>
+                <option value="<%= size_id %>"><%= @hash_price[f.id][size_id] %></option>
+              <% end %>
+            <% end %>
+          </select>
+          <select id="select_<%= f.id %>" name="select[<%= f.id %>]">
+            <% unless @hash_rkeeper[f.id].nil? %>
+              <% @hash_rkeeper[f.id].each_key { |dough_id| %>
+                <% @hash_rkeeper[f.id][dough_id].each_key { |size_id| %>
+                  <% @hash_rkeeper[f.id][dough_id][size_id].each_key { |sauce_id| %>
+                    <option value="<%= @hash_rkeeper[f.id][dough_id][size_id][sauce_id] %>"><%= size_id.to_s + '-' + dough_id.to_s %></option>
+              <% }}} %>
+            <% end %>
+          </select>
+        </div>
+        <div class="duff">
+          <% flag = true %>
+          <% @hash_dough.each_key do |dough| %>
+            <% if !(@hash_rkeeper[f.id]).nil? and !(@hash_rkeeper[f.id][dough]).nil? %>
+              <a onclick="select_dough('<%= f.id %>', <%= dough %>);"
+                 class="duff-one duff-one-left <%if flag%>duff-one-active <%flag = false end %>dough<%= f.id %><%= dough %>"><%= @hash_dough[dough][:name] %></a>
+              <script>
+                $('#select_dough_<%= f.id %>').append('<option value="<%= dough %>"><%= dough.to_s %></option>')
+              </script>
+            <% end %>
+          <% end %>
+          <% if (@hash_classification[f.classification_id] == "Кальцоне")  || (@hash_classification[f.classification_id] == "Сладкая") %>
+            <script>
+              $('.dough<%= f.id %>1').hide();
+            </script>
+          <% end %>
+        </div>
+        <a href="/pizza/preview/<%= f.id %>" data-remote="true" data-toggle="tab" onclick="$('#show_modal')[0].click()">
+            <div  class="pimg" style="background-image: url('<%= f.view_products.url %>')">
+              <!--< % case class_p.name %>-->
+              <!--< % when "Мясная" %>-->
+                <!--<img src="/assets/meat.png" class="ptip-zoom">-->
+              <!--< % when "Сырная" %>-->
+                <!--<img src="/assets/cheese.png" class="ptip-zoom">-->
+              <!--< % when "Рыбная" %>-->
+                <!--<img src="/assets/fish.png" class="ptip-zoom">-->
+              <!--< % else %>-->
+                <!--<img src="/assets/zoom-plus-mini.gif" class="ptip-zoom">-->
+              <!--< % end %>-->
+              <img src="/assets/plus.png" class="ptip-zoom">
+              <div class="ptip"><%= f.description %></div>
+            </div>
+        </a>
+        <div class="<% if f.name.length > 15 %>pname_17<% else %>pname<% end %>" ><%= f.name %></div>
+        <% flag = true %>
+        <% @hash_size.each_key do |size_id| %>
+          <% if !(@hash_price[f.id]).nil? and !(@hash_price[f.id][size_id]).nil? %>
+              <a class="psize <%if flag%>active <%flag = false end %> psize<%= f.id %><%= size_id %>"
+                 onclick="select_size('<%= f.id %>', <%= size_id %>);">
+                <%= @hash_size[size_id] %>
+              </a>
+              <script>
+                $('#select_size_<%= f.id %>').append('<option value="<%= size_id %>"><%= size_id.to_s %></option>')
+              </script>
+            <% if @hash_size[size_id] == "нет размера" %>
+              <script>
+                $('.psize<%= f.id %><%= size_id %>').hide();
+              </script>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <%= button_to 'ЗАКАЗАТЬ',
+                      line_items_path( :pizza => 'true' ),
+                      class: "variant2",
+                      id: "btn_keeper_" + f.id.to_s,
+                      remote: "true",
+                      style: "width: 133px;" %>
+
+        <script>
+          $('#btn_keeper_<%= f.id %>').parent().append("<div class='price price<%= f.id %>'><%= f.price1 %> р.</div>")
+        </script>
+
+      </div>
+      <script>check(<%= f.id %>)</script>
+    <% end %>
+  <% end %>
+<% end %>
+
+<a id="show_modal" href="#show_preview"></a>
+<a href="#close" class="overlay" id="show_preview"></a>
+<div class="popup">
+</div>
+
+<script>
+  $('.hidden').hide();
+  p = $('.popup__overlay')
+  $('.popup__toggle').click(function() {
+    p.css('display', 'none')
+  })
+  p.click(function(event) {
+    e = event || window.event
+    if (e.target == this) {
+      $(p).css('display', 'none')
+    }
+  })
+  $('.popup__close').click(function() {
+    p.css('display', 'none')
+  })
+</script>
+
+<script>
+  function check(sel) {
+    size = $("#select_size_"+sel+" :selected").val();
+    dough = $("#select_dough_"+sel+" :selected").val();
+    if (dough == 2) {
+      $('.psize'+ sel + 3).hide();
+    } else {
+      $('.psize'+ sel + 3).show();
+    }
+    if (size == 3) {
+      $('.dough'+ sel + 2).hide();
+    } else {
+      $('.dough'+ sel + 2).show();
+    }
+    check_v = $("#select_size_"+sel+" :selected").val() + "-" + $("#select_dough_"+sel+" :selected").val()
+    $('.price'+sel).text('Недоступна');
+    $('#select_'+sel+' option').each(function(){
+      if (this.text === check_v) {
+        size = $("#select_size_"+sel+" :selected").val();
+        dough = $("#select_dough_"+sel+" :selected").val();
+        price = $("#select_price_"+sel+" :selected").text();
+        name = $("#name_pizza_"+sel).text();
+        url = $("#url_pizza_"+sel).text();
+        $('.price'+sel).text($("#select_price_"+sel+" :selected").text()+' р.');
+        $('input#btn_keeper_'+sel).parent().parent().attr('action','/line_items?pizza=true&id='+sel+'&size='+size+'&dough='+dough+'&price='+price+'&name='+name+'&url='+url);
+      }
+    });
+    if ($('.price'+sel).text() === 'Недоступна') {
+      $('input#btn_keeper_'+sel).parent().parent().attr('action','/line_items?error=true');
+    }
+  }
+  function select_size(sel, id) {
+    $("#select_size_"+sel).val(id)
+    $("#select_price_"+sel).val(id)
+    check(sel);
+  }
+  function select_dough(sel, id) {
+    $("#select_dough_"+sel).val(id)
+    check(sel);
+  }
+</script>
+
+
+<%= render 'layouts/message' %>

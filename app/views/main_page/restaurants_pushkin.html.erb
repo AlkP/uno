@@ -1,0 +1,111 @@
+<%= stylesheet_link_tag "fotorama.css" %>
+<%= javascript_include_tag "fotorama.js" %>
+
+<br><br><br>
+<div class="fotorama resto" data-width="80%" data-arrows="true" data-loop="true">
+  <img src="/assets/main-page/push/01_01.jpg" alt="">
+  <img src="/assets/main-page/push/02_01.jpg" alt="">
+  <img src="/assets/main-page/push/03_01.jpg" alt="">
+  <img src="/assets/main-page/push/04_01.jpg" alt="">
+  <img src="/assets/main-page/push/05_01.jpg" alt="">
+  <img src="/assets/main-page/push/06_01.jpg" alt="">
+</div>
+
+<ul class="drop" style="position:absolute; left:235px; top: 360px;">
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/children_event">Детские праздники</a>
+  </li>
+  <li class="m-active" style="width: 100px;">
+    <a href="/restaurants_pushkin">г.Пушкин</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/restaurants_peter">г.Санкт-Петербург</a>
+  </li>
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+    <!--<a href="/restaurants_kolpino">г.Колпино</a>-->
+  <!--</li>-->
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+    <!--<a href="/restaurants_terlyaevo">пос.Тярлево</a>-->
+  <!--</li>-->
+</ul>
+
+<div style="margin: auto; width: 431px; position: relative; text-align: center; line-height: 19px;" class="restraunts">
+
+  <div>
+    <br><b><big>г. Пушкин,
+    ул. Генерала Хазова, д. 8
+    <br>Тел.: 702 7000</big></b>
+    <br>
+    <br>Ежедневно с 11.00 до 23.00
+    <br>работает кафе и бесплатная доставка
+    <br>пиццы по г. Пушкину
+    <br><b>(<a href="index.php?class=dos&amp;dos_id=1">доставка</a> в течение часа).</b>
+    <br>
+    <b><big>Схема проезда</big></b>
+    <br><br><br>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2010.6583687012117!2d30.40161!3d59.738499999999995!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469621505e07ef15%3A0xac2981ed1a52fb0b!2z0YPQuy4g0JPQtdC90LXRgNCw0LvQsCDQpdCw0LfQvtCy0LAsIDgsINCf0YPRiNC60LjQvSwg0LPQvtGA0L7QtCDQodCw0L3QutGCLdCf0LXRgtC10YDQsdGD0YDQsw!5e0!3m2!1sru!2sru!4v1395823741138" width="600" height="450" frameborder="0" style="border:0"></iframe>
+
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+
+</div>
+
+<script>
+  function positionLightboxImage() {
+    var top = ($(window).height() - $('#lightbox').height()) / 2;
+    var left = ($(window).width() - $('#lightbox').width()) / 2;
+    $('#lightbox')
+      .css({
+        'top': top,
+        'left': left
+      })
+      .fadeIn();
+  }
+
+  function removeLightbox() {
+    $('#overlay, #lightbox')
+      .fadeOut('slow', function() {
+        $(this).remove();
+        $('body').css('overflow-y', 'auto'); // show scrollbars!
+      });
+  }
+
+
+  $(document).ready(function(){
+    $('a.lightbox').click(function(e) {
+      $('body').css('overflow-y', 'hidden'); // hide scrollbars!
+
+      $('<div id="overlay"></div>')
+        .css('top', '0')
+        .css('opacity', '0')
+        .animate({'opacity': '0.8'}, 'slow')
+        .appendTo('body');
+
+      $('<div id="lightbox"></div>')
+        .hide()
+        .appendTo('body');
+
+      $('<img id="light-img">')
+        .attr('src', $(this).attr('href'))
+        .load(function() {
+          positionLightboxImage();
+        })
+        .click(function() {
+          removeLightbox();
+        })
+        .appendTo('#lightbox');
+
+      $('#overlay').click(function() {
+        removeLightbox();
+      });
+      return false;
+    });
+  });
+</script>

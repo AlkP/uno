@@ -1,0 +1,22 @@
+<h3>Новый соус</h3>
+<div class="modal-body">
+  <%= form_for @sauce, :url => sauce_path(@sauce) do |f| %>
+
+    <table class="table table-striped">
+      <tr>
+        <td>
+          <%= f.label :Наименование %><br>
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+        <td>
+          <%= f.submit 'Сохранить', class: "cat cat-active pan-pizza"%>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<div class="modal-footer">
+  <%= link_to 'Назад', sauces_path %>
+</div>

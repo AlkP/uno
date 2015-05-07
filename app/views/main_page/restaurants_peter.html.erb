@@ -1,0 +1,112 @@
+<%= stylesheet_link_tag "fotorama.css" %>
+<%= javascript_include_tag "fotorama.js" %>
+
+<br><br><br>
+<div class="fotorama resto" data-width="80%" data-arrows="true" data-loop="true">
+  <img src="/assets/main-page/peter/01_01.jpg" alt="">
+  <img src="/assets/main-page/peter/02_01.jpg" alt="">
+  <img src="/assets/main-page/peter/03_01.jpg" alt="">
+  <img src="/assets/main-page/peter/04_01.jpg" alt="">
+  <img src="/assets/main-page/peter/05_01.jpg" alt="">
+  <img src="/assets/main-page/peter/06_01.jpg" alt="">
+</div>
+
+<ul class="drop" style="position:absolute; left:235px; top: 360px;">
+  <li class="m-active m-diactive" style="width: 145px;">
+    <a href="/children_event">Детские праздники</a>
+  </li>
+  <li class="m-active m-diactive" style="width: 100px;">
+    <a href="/restaurants_pushkin">г.Пушкин</a>
+  </li>
+  <li class="m-active" style="width: 145px;">
+    <a href="/restaurants_peter">г.Санкт-Петербург</a>
+  </li>
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+    <!--<a href="/restaurants_kolpino">г.Колпино</a>-->
+  <!--</li>-->
+  <!--<li class="m-active m-diactive" style="width: 120px;">-->
+    <!--<a href="/restaurants_terlyaevo">пос.Тярлево</a>-->
+  <!--</li>-->
+</ul>
+
+<div style="margin: auto; width: 431px; position: relative; text-align: center; line-height: 19px;" class="restraunts">
+
+  <div>
+    <br><b><big>г. Санкт-Петербург,
+    ул. Крыленко, д. 27
+    <br>Тел.: 702 7555</big></b>
+    <br>
+    <br>Ежедневно с 11.00 до 23.00
+    <br>работает кафе и бесплатная доставка
+    <br>пиццы по Невскому району
+    <br><b>(<a href="index.php?class=dos&amp;dos_id=2">доставка</a> в течение часа).</b>
+
+    <br>
+    <b><big>Схема проезда</big></b>
+    <br><br><br>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2001.0593247333727!2d30.481085!3d59.89796500000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46962e5a2568d273%3A0x207a009d0a2ad8f!2z0YPQuy4g0JrRgNGL0LvQtdC90LrQviwgMjcsINCh0LDQvdC60YIt0J_QtdGC0LXRgNCx0YPRgNCz!5e0!3m2!1sru!2sru!4v1395823670589" width="600" height="450" frameborder="0" style="border:0"></iframe>
+
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+
+</div>
+
+<script>
+  function positionLightboxImage() {
+    var top = ($(window).height() - $('#lightbox').height()) / 2;
+    var left = ($(window).width() - $('#lightbox').width()) / 2;
+    $('#lightbox')
+      .css({
+        'top': top,
+        'left': left
+      })
+      .fadeIn();
+  }
+
+  function removeLightbox() {
+    $('#overlay, #lightbox')
+      .fadeOut('slow', function() {
+        $(this).remove();
+        $('body').css('overflow-y', 'auto'); // show scrollbars!
+      });
+  }
+
+
+  $(document).ready(function(){
+    $('a.lightbox').click(function(e) {
+      $('body').css('overflow-y', 'hidden'); // hide scrollbars!
+
+      $('<div id="overlay"></div>')
+        .css('top', '0')
+        .css('opacity', '0')
+        .animate({'opacity': '0.8'}, 'slow')
+        .appendTo('body');
+
+      $('<div id="lightbox"></div>')
+        .hide()
+        .appendTo('body');
+
+      $('<img id="light-img">')
+        .attr('src', $(this).attr('href'))
+        .load(function() {
+          positionLightboxImage();
+        })
+        .click(function() {
+          removeLightbox();
+        })
+        .appendTo('#lightbox');
+
+      $('#overlay').click(function() {
+        removeLightbox();
+      });
+      return false;
+    });
+  });
+</script>
